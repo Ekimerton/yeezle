@@ -9,51 +9,92 @@ import Confetti from "@/components/Confetti";
 import Timer from "@/components/Timer";
 import foods from "@/public/foods";
 
-function getTimeUntilNextNumber() {
-  const now = new Date(); // Current date and time
-  const tomorrow = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() + 1
-  ); // Next day at 00:00:00
+function generateShareableString(previousGuesses, target) {
+  let shareableString =
+    "I got today's recipe in " + previousGuesses.length + " guesses!\n\n";
 
-  const timeRemaining = tomorrow - now; // Time remaining in milliseconds
-  const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
-  const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+  const reverted = [...previousGuesses].reverse();
 
-  // Format the time as hh:mm:ss
-  const formattedTime = `${String(hours).padStart(2, "0")}:${String(
-    minutes
-  ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  for (let i = 0; i < reverted.length; i++) {
+    const guess = reverted[i];
+    let line = "";
 
-  return formattedTime;
+    for (let j = 0; j < guess.ingredients.length; j++) {
+      const ingredient = guess.ingredients[j];
+      const isCorrect = target.includes(ingredient);
+      const square = isCorrect ? "🟩" : "⬜️";
+      line += square;
+    }
+
+    shareableString += line + "\n";
+  }
+
+  return shareableString;
+}
+
+// Function to generate a random number based on the current date
+function generateUniqueNumber(n) {
+  const today = new Date().toISOString().split("T")[0];
+  const seed = today;
+  const rng = seedrandom(seed);
+  const uniqueNumber = Math.floor(rng() * (Number(n) + 1));
+  return uniqueNumber;
 }
 
 export default function Home() {
   const [query, setQuery] = useState("");
   const [selectedFood, setSelectedFood] = useState();
-  const [counter, setCounter] = useState(0);
-
   const [previousGuesses, setPreviousGuesses] = useState([]);
   const [target, setTarget] = useState(0);
-  const [gameOver, setGameOver] = useState(false);
 
   const [api, contextHolder] = notification.useNotification();
-
-  // Function to generate a random number based on the current date
-  function generateUniqueNumber(n) {
-    const today = new Date().toISOString().split("T")[0];
-    const seed = today;
-    const rng = seedrandom(seed);
-    const uniqueNumber = Math.floor(rng() * (Number(n) + 1));
-    return uniqueNumber;
-  }
 
   useEffect(() => {
     const random = generateUniqueNumber(foods.length - 1);
     setTarget(foods[random]);
   }, []);
+
+  useEffect(() => {
+    if (previousGuesses.length > 0 && previousGuesses[0].name === target.name) {
+      api.open({
+        message: "Congrats!!",
+        description: (
+          <div>
+            <p>
+              Today&apos;s recipe was {target.name}. You got today&apos;s recipe
+              in {previousGuesses.length}!
+            </p>
+            <a
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  generateShareableString(previousGuesses, target.ingredients)
+                );
+              }}
+            >
+              <p>Copy shareable text</p>
+            </a>
+            <Timer isModalActive={true} />
+            <Confetti />
+          </div>
+        ),
+        duration: 0,
+      });
+    } else if (previousGuesses.length >= 5) {
+      api.open({
+        message: "You sux!!",
+        description: (
+          <div>
+            <p>
+              Today&apos;s recipe was {target.name}. You sux farts out of my
+              ass!
+            </p>
+            <Timer isModalActive={true} />
+          </div>
+        ),
+        duration: 0,
+      });
+    }
+  }, [api, previousGuesses, target]);
 
   const onSubmit = (food) => {
     const val = food.name;
@@ -61,35 +102,10 @@ export default function Home() {
     const currFood = foods.find((food) => food.name === val);
     if (currFood) {
       const oldGuesses = [...previousGuesses];
-      oldGuesses.unshift(val);
+      oldGuesses.unshift(food);
       setPreviousGuesses(oldGuesses);
     }
 
-    if (val === target.name) {
-      setGameOver(true);
-      api.open({
-        message: "Congrats!!",
-        description: (
-          <div>
-            <p>
-              Today&apos;s recipe was {target.name}. You got today&apos;s recipe
-              in {counter + 1}!
-            </p>
-            <Timer isModalActive={true} />
-            <Confetti />
-          </div>
-        ),
-        duration: 0,
-      });
-    } else if (counter >= 4) {
-      setGameOver(true);
-      api.open({
-        message: "You failed!!",
-        description: `Today's recipe was ${target.name}. Better luck next time!`,
-        duration: 0,
-      });
-    }
-    setCounter(counter + 1);
     setQuery("");
   };
 
@@ -100,14 +116,19 @@ export default function Home() {
         <div className="container frosted-glass">
           <div className="section-centered">
             <h1 id="title">Reciple</h1>
-            <p className="light-text">{5 - counter} guesses left</p>
+            <p className="light-text">
+              {5 - previousGuesses.length} guesses left
+            </p>
             <FoodCombobox
               foods={foods}
               selectedFood={selectedFood}
               onSubmit={onSubmit}
               setQuery={setQuery}
               query={query}
-              gameOver={gameOver}
+              gameOver={
+                previousGuesses.includes(target.name) ||
+                previousGuesses.length >= 5
+              }
             />
             <p style={{ maxWidth: 400 }}>
               Select a recipe from our list and look for highlighted ingredients
@@ -122,7 +143,7 @@ export default function Home() {
                 style={{ width: "100%" }}
                 renderItem={(item, index) => (
                   <List.Item>
-                    <Guess name={item} target={target} />
+                    <Guess food={item} target={target} />
                   </List.Item>
                 )}
               />

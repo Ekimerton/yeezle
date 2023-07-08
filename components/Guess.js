@@ -3,10 +3,8 @@ import IngredientCard from "./IngredientCard";
 import foods from "@/public/foods";
 
 export default function Guess(props) {
-  const { name, target } = props;
-  const ingredients = foods
-    .find((food) => food.name === name)
-    .ingredients.sort();
+  const { food, target } = props;
+  const { name, ingredients } = food;
 
   return (
     <div style={{ textAlign: "center", width: "100%" }}>
