@@ -4,7 +4,7 @@ const foods = [
     ingredients: ["tofu", "onions", "peppers", "soySauce", "veggies"],
   },
   {
-    name: "Cheese Pizza",
+    name: "Mediterranean Pizza",
     ingredients: ["dough", "tomatoes", "cheese", "onions", "olives"],
   },
   {
@@ -28,7 +28,7 @@ const foods = [
     ingredients: ["coconutMilk", "potatoes", "carrots", "veggies", "spices"],
   },
   {
-    name: "Cheese Omelette",
+    name: "American Omelette",
     ingredients: ["eggs", "cheese", "onions", "peppers", "mushrooms"],
   },
   {
@@ -40,16 +40,8 @@ const foods = [
     ingredients: ["dough", "chocolate", "eggs", "sweeteners", "dairy"],
   },
   {
-    name: "Stir-Fried Rice",
-    ingredients: ["rice", "onions", "carrots", "soySauce", "eggs"],
-  },
-  {
     name: "Creamy Pasta",
     ingredients: ["pasta", "cheese", "dairy", "garlic", "herbs"],
-  },
-  {
-    name: "Tofu and Vegetable Soup",
-    ingredients: ["tofu", "carrots", "veggies", "onions", "soySauce"],
   },
   {
     name: "Grilled Shrimp Skewers",
@@ -82,6 +74,98 @@ const foods = [
   {
     name: "Apple Pie",
     ingredients: ["apples", "dough", "sweeteners", "citrus", "spices"],
+  },
+  {
+    name: "Shrimp Pasta",
+    ingredients: ["seafood", "pasta", "butter", "garlic", "wine"],
+  },
+  {
+    name: "Egg Fried Rice",
+    ingredients: ["rice", "eggs", "onions", "soySauce", "veggies"],
+  },
+  {
+    name: "Tomato Soup",
+    ingredients: ["tomatoes", "onions", "herbs", "dairy", "dough"],
+  },
+  {
+    name: "Pasta Alfredo",
+    ingredients: ["pasta", "butter", "dairy", "cheese", "garlic"],
+  },
+  {
+    name: "Chocolate Chip & Nut Cookies",
+    ingredients: ["dough", "butter", "sweeteners", "chocolate", "nuts"],
+  },
+  {
+    name: "Cheese and Wine Pairing",
+    ingredients: ["cheese", "wine", "nuts", "apples", "olives"],
+  },
+  {
+    name: "Vegetable Stir-fry",
+    ingredients: ["veggies", "tofu", "soySauce", "rice", "garlic"],
+  },
+  {
+    name: "Burger",
+    ingredients: ["meat", "onions", "leafyGreens", "tomatoes", "dough"],
+  },
+  {
+    name: "Potato Salad",
+    ingredients: ["potatoes", "onions", "pickles", "spices", "leafyGreens"],
+  },
+  {
+    name: "Morning Smoothie",
+    ingredients: ["berries", "sweeteners", "dairy", "citrus", "leafyGreens"],
+  },
+  {
+    name: "Pasta Bolognese",
+    ingredients: ["pasta", "meat", "tomatoes", "onions", "herbs"],
+  },
+  {
+    name: "Chicken Tacos",
+    ingredients: ["meat", "dough", "leafyGreens", "tomatoes", "cheese"],
+  },
+  {
+    name: "Stuffed Bell Peppers",
+    ingredients: ["peppers", "rice", "meat", "onions", "tomatoes"],
+  },
+  {
+    name: "Meatloaf",
+    ingredients: ["meat", "onions", "eggs", "tomatoes", "dough"],
+  },
+  {
+    name: "Pad Thai",
+    ingredients: ["rice", "eggs", "tofu", "onions", "soySauce"],
+  },
+  {
+    name: "Beef Stir-fry",
+    ingredients: ["meat", "onions", "peppers", "soySauce", "rice"],
+  },
+  {
+    name: "Cucumber Salad",
+    ingredients: ["cucumbers", "onions", "vinegar", "sweeteners", "herbs"],
+  },
+  {
+    name: "Mushroom Risotto",
+    ingredients: ["rice", "mushrooms", "onions", "cheese", "wine"],
+  },
+  {
+    name: "Vegan Chocolate Cake",
+    ingredients: ["dough", "chocolate", "sweeteners", "coconutMilk", "berries"],
+  },
+  {
+    name: "Fruit Salad",
+    ingredients: ["apples", "berries", "citrus", "sweeteners", "nuts"],
+  },
+  {
+    name: "Stuffed Mushrooms",
+    ingredients: ["mushrooms", "cheese", "onions", "herbs", "dough"],
+  },
+  {
+    name: "Chicken Noodle Soup",
+    ingredients: ["meat", "pasta", "onions", "carrots", "herbs"],
+  },
+  {
+    name: "Kebabs",
+    ingredients: ["meat", "peppers", "onions", "citrus", "spices"],
   },
 ];
 

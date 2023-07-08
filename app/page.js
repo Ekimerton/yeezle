@@ -126,7 +126,8 @@ export default function Home() {
               setQuery={setQuery}
               query={query}
               gameOver={
-                previousGuesses.includes(target.name) ||
+                (previousGuesses[0] &&
+                  previousGuesses[0].name == target.name) ||
                 previousGuesses.length >= 5
               }
             />
