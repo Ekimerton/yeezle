@@ -2,26 +2,148 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+/*
+  2. Remove default margin
+*/
+* {
+  margin: 0;
+}
+
+/*
+  3. Allow percentage-based heights in the application
+*/
+html, body {
+  height: 100%;
+}
+
+/*
+  Typographic tweaks!
+  4. Add accessible line-height
+  5. Improve text rendering
+*/
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+  6. Improve media defaults
+*/
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/*
+  7. Remove built-in form typography styles
+*/
+input, button, textarea, select {
+  font: inherit;
+}
+
+/*
+  8. Avoid text overflows
+*/
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/*
+  9. Create a root stacking context
+*/
+#root, #__next {
+  isolation: isolate;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: 'Open Sans', sans-serif;
+}
+
+main {
+  min-height: 100%;
+  display: flex;
+  background-image: url('../public/pppixelate.svg');
+  background-position: center;
+}
+
+div {
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 2rem;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p {
+  font-size: 1rem;
+  padding-bottom: 8px;
+  padding-top: 8px;
+}
+
+.light-text {
+  font-size: 0.8rem;
+}
+
+a{
+  color: #2630ff;
+}
+
+a:active  {
+  color: #2686ff;
+}
+
+.column-view {
+  align-items: center;
+  flex-direction: column;
+  min-height: 100%;
+  flex: 1
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  padding: 48px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  min-height: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+.section {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.section-centered {
+  align-items: center;
+  text-align: center;
+}
+
+.frosted-glass {
+  background: rgba(255, 255, 255, 0.6);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
 }
