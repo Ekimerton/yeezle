@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import moment from "moment";
+import moment from "moment-timezone";
 
 const Timer = ({ isModalActive }) => {
   const [remainingTime, setRemainingTime] = useState("");
@@ -8,8 +8,8 @@ const Timer = ({ isModalActive }) => {
     let timer = null;
 
     const calculateRemainingTime = () => {
-      const now = moment();
-      const endOfDay = moment().endOf("day");
+      const now = moment().tz("America/New_York");
+      const endOfDay = moment().tz("America/New_York").endOf("day");
       const duration = moment.duration(endOfDay.diff(now));
       const hours = duration.hours().toString().padStart(2, "0");
       const minutes = duration.minutes().toString().padStart(2, "0");

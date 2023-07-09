@@ -96,10 +96,6 @@ const foods = [
     ingredients: ["dough", "butter", "sweeteners", "chocolate", "nuts"],
   },
   {
-    name: "Cheese and Wine Pairing",
-    ingredients: ["cheese", "wine", "nuts", "apples", "olives"],
-  },
-  {
     name: "Vegetable Stir-fry",
     ingredients: ["veggies", "tofu", "soySauce", "rice", "garlic"],
   },

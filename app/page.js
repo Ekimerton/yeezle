@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import moment from "moment-timezone";
 import { List, notification } from "antd";
 import seedrandom from "seedrandom";
 import FoodCombobox from "@/components/FoodCombobox";
@@ -34,8 +35,8 @@ function generateShareableString(previousGuesses, target) {
 
 // Function to generate a random number based on the current date
 function generateUniqueNumber(n) {
-  const today = new Date().toISOString().split("T")[0];
-  const seed = today;
+  const now = moment().tz("America/New_York");
+  const seed = now.format("DD-MM-YYYY");
   const rng = seedrandom(seed);
   const uniqueNumber = Math.floor(rng() * (Number(n) + 1));
   return uniqueNumber;
@@ -112,7 +113,7 @@ export default function Home() {
   return (
     <main>
       {contextHolder}
-      <div className="column-view frosted-glass">
+      <div className="column-view">
         <div className="container frosted-glass">
           <div className="section-centered">
             <h1 id="title">Reciple</h1>
