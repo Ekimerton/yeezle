@@ -12,7 +12,9 @@ export function generateUniqueNumber(n) {
 
 export function generateShareableString(previousGuesses, target) {
   let shareableString =
-    "I got today's recipe in " + previousGuesses.length + " guesses!\n\n";
+    "I got today's recipe in " +
+    previousGuesses.length +
+    " guesses!\n\nhttps://reciple-delta.vercel.app";
 
   const reverted = [...previousGuesses].reverse();
 
