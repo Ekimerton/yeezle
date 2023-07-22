@@ -1,54 +1,25 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import moment from "moment-timezone";
-import { List, notification } from "antd";
-import seedrandom from "seedrandom";
+import { List } from "antd";
 import FoodCombobox from "@/components/FoodCombobox";
 import Guess from "@/components/Guess";
-import Confetti from "@/components/Confetti";
-import Timer from "@/components/Timer";
 import foods from "@/public/foods";
-
-function generateShareableString(previousGuesses, target) {
-  let shareableString =
-    "I got today's recipe in " + previousGuesses.length + " guesses!\n\n";
-
-  const reverted = [...previousGuesses].reverse();
-
-  for (let i = 0; i < reverted.length; i++) {
-    const guess = reverted[i];
-    let line = "";
-
-    for (let j = 0; j < guess.ingredients.length; j++) {
-      const ingredient = guess.ingredients[j];
-      const isCorrect = target.includes(ingredient);
-      const square = isCorrect ? "🟩" : "⬜️";
-      line += square;
-    }
-
-    shareableString += line + "\n";
-  }
-
-  return shareableString;
-}
-
-// Function to generate a random number based on the current date
-function generateUniqueNumber(n) {
-  const now = moment().tz("America/New_York");
-  const seed = now.format("DD-MM-YYYY");
-  const rng = seedrandom(seed);
-  const uniqueNumber = Math.floor(rng() * (Number(n) + 1));
-  return uniqueNumber;
-}
+import useLocalStorage from "./hooks/useLocalStorage";
+import { generateUniqueNumber } from "@/app/utils";
+import EndNotification from "@/components/EndNotification";
 
 export default function Home() {
   const [query, setQuery] = useState("");
-  const [selectedFood, setSelectedFood] = useState();
-  const [previousGuesses, setPreviousGuesses] = useState([]);
-  const [target, setTarget] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
-  const [api, contextHolder] = notification.useNotification();
+  const [selectedFood, setSelectedFood] = useState();
+  const [target, setTarget] = useState(0);
+  const [previousGuesses, setPreviousGuesses] = useLocalStorage(
+    "previousGuesses",
+    []
+  );
+  const guessesLeft = 5 - previousGuesses.length;
 
   useEffect(() => {
     const random = generateUniqueNumber(foods.length - 1);
@@ -56,46 +27,8 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (previousGuesses.length > 0 && previousGuesses[0].name === target.name) {
-      api.open({
-        message: "Congrats!!",
-        description: (
-          <div>
-            <p>
-              Today&apos;s recipe was {target.name}. You got today&apos;s recipe
-              in {previousGuesses.length}!
-            </p>
-            <a
-              onClick={() => {
-                navigator.clipboard.writeText(
-                  generateShareableString(previousGuesses, target.ingredients)
-                );
-              }}
-            >
-              <p>Copy shareable text</p>
-            </a>
-            <Timer isModalActive={true} />
-            <Confetti />
-          </div>
-        ),
-        duration: 0,
-      });
-    } else if (previousGuesses.length >= 5) {
-      api.open({
-        message: "You sux!!",
-        description: (
-          <div>
-            <p>
-              Today&apos;s recipe was {target.name}. You sux farts out of my
-              ass!
-            </p>
-            <Timer isModalActive={true} />
-          </div>
-        ),
-        duration: 0,
-      });
-    }
-  }, [api, previousGuesses, target]);
+    setIsMounted(true);
+  }, []);
 
   const onSubmit = (food) => {
     const val = food.name;
@@ -110,15 +43,19 @@ export default function Home() {
     setQuery("");
   };
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <main>
-      {contextHolder}
+      <EndNotification target={target} previousGuesses={previousGuesses} />
       <div className="column-view">
         <div className="container frosted-glass">
           <div className="section-centered">
             <h1 id="title">Reciple</h1>
             <p className="light-text">
-              {5 - previousGuesses.length} guesses left
+              {guessesLeft} guess{guessesLeft == 1 ? "" : "es"} left
             </p>
             <FoodCombobox
               foods={foods}
@@ -139,7 +76,7 @@ export default function Home() {
             </p>
           </div>
           <div>
-            {previousGuesses.length > 0 && (
+            {target && previousGuesses.length > 0 && (
               <List
                 dataSource={previousGuesses}
                 style={{ width: "100%" }}
